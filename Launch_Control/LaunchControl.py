@@ -134,11 +134,13 @@ class LaunchControl(ControlSurface):
 
         self._on_track_offset.subject = self._session
 
+##This is the device mode that you'll want to make the changes to.
     def _init_device(self):
         make_button = partial(make_launch_control_button, channel=10)
         make_encoder = partial(make_launch_control_encoder, channel=10)
         bottom_encoders, top_encoders = make_all_encoders(u'Device', make_encoder)
-        parameter_controls = top_encoders[:4] + bottom_encoders[:4]
+## Here you change top and bottom encoders to values of :8
+        parameter_controls = top_encoders[:8] + bottom_encoders[:8]
         bank_buttons = [ make_button(identifier, u'Device_Bank_Button_' + str(i), is_pad=True) for i, identifier in enumerate(pad_identifiers) ]
         for button in bank_buttons:
             button.set_on_off_values(Colors.LED_ON, Colors.LED_OFF)
@@ -146,7 +148,8 @@ class LaunchControl(ControlSurface):
         self._device_bank_registry = DeviceBankRegistry()
         self._device = DeviceComponent(device_bank_registry=self._device_bank_registry, name=u'Device', device_selection_follows_track_selection=True)
         self._device.set_enabled(False)
-        self._device.layer = Layer(parameter_controls=ButtonMatrixElement(rows=[parameter_controls]), bank_buttons=ButtonMatrixElement(rows=[bank_buttons]))
+## Change to this next line for rows=
+        self._device.layer = Layer(parameter_controls=ButtonMatrixElement(rows=[top_encoders, bottom_encoders]), bank_buttons=ButtonMatrixElement(rows=[bank_buttons]))
         self.set_device_component(self._device)
         self._device_navigation = DeviceNavigationComponent()
         self._device_navigation.set_enabled(False)

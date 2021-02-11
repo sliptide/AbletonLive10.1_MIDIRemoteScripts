@@ -671,15 +671,15 @@ def parameter_banks(device, device_dict=DEVICE_DICT):
                             except:
                                 parameter_indices = []
 
-                            if len(parameter_indices) != 8:
-                                return [ None for i in range(0, 8) ]
+                            if len(parameter_indices) != 16:
+                                return [ None for i in range(0, 16) ]
                             else:
                                 return [ device.parameters[i] if i != -1 else None for i in parameter_indices ]
                                 return
 
                         return map(_bank_parameters, range(0, banks))
 
-            return group(device_parameters_to_map(device), 8)
+            return group(device_parameters_to_map(device), 16)
 
     return []
 
@@ -717,7 +717,7 @@ def number_of_parameter_banks(device, device_dict=DEVICE_DICT):
                         return banks
 
             param_count = len(device.parameters[1:])
-            return param_count / 8 + (1 if param_count % 8 else 0)
+            return param_count / 16 + (1 if param_count % 8 else 0)
 
     return 0
 
